@@ -200,11 +200,11 @@ export default function App() {
         </div>
 
         <footer className="mt-auto flex flex-wrap items-center justify-center gap-2 pt-10 text-xs text-zinc-500">
-          {lang === 'ne' ? (
-            <p className="w-full text-center">
-              नेपालीमा टाइप गर्न system keyboard लाई Nepali layout मा बदल्नुहोस्
-            </p>
-          ) : null}
+          <p className="w-full text-center">
+            {lang === 'ne'
+              ? 'नेपालीमा टाइप गर्न system keyboard लाई Nepali layout मा बदल्नुहोस्'
+              : 'Press Esc anytime to restart · Space moves to the next word'}
+          </p>
           <a
             href={PORTFOLIO_URL}
             target="_blank"
