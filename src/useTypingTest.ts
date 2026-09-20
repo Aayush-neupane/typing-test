@@ -52,62 +52,54 @@ export function useTypingTest(lang: Language, duration: number) {
     restart()
   }, [restart])
 
+  // Finish cleanly when the countdown reaches zero.
+  useEffect(() => {
+    if (timeLeft === 0 && status === 'running') {
+      stopTimer()
+      setStatus('done')
+    }
+  }, [timeLeft, status, stopTimer])
+
   const startTimer = useCallback(() => {
+    if (timerRef.current !== null) return
     setStatus('running')
     timerRef.current = window.setInterval(() => {
-      setTimeLeft((t) => {
-        if (t <= 1) {
-          stopTimer()
-          setStatus('done')
-          return 0
-        }
-        return t - 1
-      })
+      setTimeLeft((t) => Math.max(0, t - 1))
     }, 1000)
-  }, [stopTimer])
-
-  const submitWord = useCallback(
-    (typedWord: string) => {
-      setSubmitted((prev) => [...prev, typedWord])
-      setIndex((i) => {
-        const next = i + 1
-        if (words.length - next < REFILL_AT) {
-          setWords((w) => [...w, ...randomWords(lang, REFILL_BY)])
-        }
-        return next
-      })
-      setInput('')
-    },
-    [lang, words.length],
-  )
+  }, [])
 
   const handleInput = useCallback(
     (value: string) => {
       if (status === 'done') return
       if (status === 'idle') startTimer()
       if (value.endsWith(' ')) {
-        submitWord(value.slice(0, -1))
+        // Ignore a lone space (e.g. space pressed before typing anything).
+        if (value.trim() === '') {
+          setInput('')
+          return
+        }
+        const typedWord = value.slice(0, -1)
+        const nextIndex = index + 1
+        setSubmitted([...submitted, typedWord])
+        setIndex(nextIndex)
+        setInput('')
+        if (words.length - nextIndex < REFILL_AT) {
+          setWords([...words, ...randomWords(lang, REFILL_BY)])
+        }
       } else {
         setInput(value)
       }
     },
-    [status, startTimer, submitWord],
+    [status, startTimer, index, submitted, words, lang],
   )
 
   const goBackOneWord = useCallback(() => {
     if (input !== '' || index === 0 || status === 'done') return
-    setSubmitted((prev) => {
-      const last = prev[prev.length - 1] ?? ''
-      setInput(last)
-      return prev.slice(0, -1)
-    })
-    setIndex((i) => i - 1)
-  }, [input, index, status])
-
-  const finishNow = useCallback(() => {
-    stopTimer()
-    setStatus('done')
-  }, [stopTimer])
+    const last = submitted[submitted.length - 1] ?? ''
+    setSubmitted(submitted.slice(0, -1))
+    setInput(last)
+    setIndex(index - 1)
+  }, [input, index, status, submitted])
 
   const stats: Stats = useMemo(() => {
     let correctChars = 0
@@ -125,7 +117,7 @@ export function useTypingTest(lang: Language, duration: number) {
         }
       }
     })
-    // in-progress word counts toward accuracy but not wpm chars
+    // In-progress word counts toward accuracy but not wpm chars.
     const currentTarget = words[index] ?? ''
     for (let j = 0; j < input.length; j++) {
       typedChars += 1
@@ -155,6 +147,5 @@ export function useTypingTest(lang: Language, duration: number) {
     handleInput,
     goBackOneWord,
     restart,
-    finishNow,
   }
 }
