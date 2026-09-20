@@ -89,7 +89,7 @@ export default function App() {
           />
           <div className="mr-auto">
             <h1 className="text-xl font-bold tracking-tight">
-              Typing Test <span className="text-yellow-400">·</span>{' '}
+              Aurora Type <span className="text-yellow-400">·</span>{' '}
               <span className="text-zinc-400">English + नेपाली</span>
             </h1>
             <p className="text-xs text-zinc-500">Check your speed, beat your best</p>
