@@ -197,9 +197,9 @@ export default function App() {
             rel="noreferrer"
             className="flex items-center gap-2.5 text-sm text-zinc-400 transition-colors hover:text-yellow-300"
           >
-            <img src="/logo.png" alt="" className="h-6 w-6 rounded-md border border-white/10 object-cover" />
+            <img src="/logo.png" alt="" className="h-10 w-10 rounded-lg border border-white/10 object-cover" />
             <span>
-              Crafted by <span className="font-semibold text-zinc-100">Aayush Neupane</span>
+              Developed by <span className="font-semibold text-zinc-100">Aayush Neupane</span>
             </span>
           </a>
         </footer>
