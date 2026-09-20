@@ -4,6 +4,7 @@ import { useTypingTest } from './useTypingTest.ts'
 import type { Language } from './words.ts'
 
 const DURATIONS = [15, 30, 60] as const
+const PORTFOLIO_URL = 'https://dynamic-aayush38.netlify.app'
 
 interface Best {
   [key: string]: number
@@ -17,6 +18,29 @@ function loadBest(): Best {
   }
 }
 
+function Pill({
+  active,
+  onClick,
+  children,
+}: {
+  active: boolean
+  onClick: () => void
+  children: React.ReactNode
+}) {
+  return (
+    <button
+      onClick={onClick}
+      className={`rounded-full px-3.5 py-1.5 text-sm font-medium transition-colors ${
+        active
+          ? 'bg-yellow-400 text-zinc-950 shadow-[0_0_20px_-4px_rgba(250,204,21,0.6)]'
+          : 'text-zinc-400 hover:bg-white/5 hover:text-zinc-100'
+      }`}
+    >
+      {children}
+    </button>
+  )
+}
+
 export default function App() {
   const [lang, setLang] = useState<Language>('ne')
   const [duration, setDuration] = useState<number>(30)
@@ -25,8 +49,7 @@ export default function App() {
 
   const bestKey = `${lang}-${duration}`
   const prevBest = best[bestKey] ?? 0
-  const isNewBest =
-    t.status === 'done' && t.stats.typedChars > 0 && t.stats.wpm > prevBest
+  const isNewBest = t.status === 'done' && t.stats.typedChars > 0 && t.stats.wpm > prevBest
 
   useEffect(() => {
     if (isNewBest) {
@@ -56,106 +79,97 @@ export default function App() {
   )
 
   return (
-    <main className="min-h-screen bg-zinc-950 text-zinc-100">
-      <div className="mx-auto max-w-3xl px-6 py-10">
-        <header className="flex flex-wrap items-center justify-between gap-4">
-          <div>
-            <h1 className="text-2xl font-bold tracking-tight">Typing Test</h1>
-            <p className="text-sm text-zinc-400">English + Nepali · check your speed</p>
+    <main className="app-backdrop min-h-screen bg-zinc-950 text-zinc-100">
+      <div className="mx-auto flex min-h-screen max-w-3xl flex-col px-6 py-8">
+        <header className="flex flex-wrap items-center gap-4">
+          <img
+            src="/logo.png"
+            alt="Aayush Neupane logo"
+            className="h-11 w-11 rounded-xl border border-white/10 object-cover"
+          />
+          <div className="mr-auto">
+            <h1 className="text-xl font-bold tracking-tight">
+              Typing Test <span className="text-yellow-400">·</span>{' '}
+              <span className="text-zinc-400">English + नेपाली</span>
+            </h1>
+            <p className="text-xs text-zinc-500">Check your speed, beat your best</p>
           </div>
-          <div className="flex items-center gap-2">
-            <div className="flex rounded-lg border border-zinc-800 bg-zinc-900 p-1 text-sm">
-              {(
-                [
-                  { id: 'en', label: 'English' },
-                  { id: 'ne', label: 'नेपाली' },
-                ] as const
-              ).map((l) => (
-                <button
-                  key={l.id}
-                  onClick={() => setLang(l.id)}
-                  className={`rounded-md px-3 py-1.5 font-medium ${
-                    lang === l.id ? 'bg-zinc-100 text-zinc-900' : 'text-zinc-400 hover:text-zinc-200'
-                  }`}
-                >
-                  {l.label}
-                </button>
-              ))}
-            </div>
-            <div className="flex rounded-lg border border-zinc-800 bg-zinc-900 p-1 text-sm">
-              {DURATIONS.map((d) => (
-                <button
-                  key={d}
-                  onClick={() => setDuration(d)}
-                  className={`rounded-md px-3 py-1.5 font-medium ${
-                    duration === d ? 'bg-zinc-100 text-zinc-900' : 'text-zinc-400 hover:text-zinc-200'
-                  }`}
-                >
-                  {d}s
-                </button>
-              ))}
-            </div>
+          <div className="flex items-center gap-1 rounded-full border border-white/10 bg-black/40 p-1">
+            <Pill active={lang === 'en'} onClick={() => setLang('en')}>
+              English
+            </Pill>
+            <Pill active={lang === 'ne'} onClick={() => setLang('ne')}>
+              नेपाली
+            </Pill>
+          </div>
+          <div className="flex items-center gap-1 rounded-full border border-white/10 bg-black/40 p-1">
+            {DURATIONS.map((d) => (
+              <Pill key={d} active={duration === d} onClick={() => setDuration(d)}>
+                {d}s
+              </Pill>
+            ))}
             <button
               onClick={restart}
               title="Restart (Esc)"
-              className="rounded-lg border border-zinc-800 bg-zinc-900 px-3 py-2 text-sm text-zinc-300 hover:border-zinc-600"
+              className="rounded-full px-3 py-1.5 text-sm text-zinc-400 transition-colors hover:bg-white/5 hover:text-zinc-100"
             >
               ↻
             </button>
           </div>
         </header>
 
-        <div className="mt-6 flex items-center gap-6">
-          <div className={`text-4xl font-bold tabular-nums ${timeColor}`}>{t.timeLeft}s</div>
-          <div className="text-sm text-zinc-400">
-            <span className="mr-4">
-              live: <span className="font-semibold text-zinc-200">{t.stats.wpm}</span> wpm
+        <div className="mt-8 flex items-end gap-6">
+          <div className={`text-5xl font-bold tabular-nums tracking-tight ${timeColor}`}>
+            {t.timeLeft}
+            <span className="text-lg font-medium text-zinc-500">s</span>
+          </div>
+          <div className="pb-1.5 text-sm text-zinc-400">
+            <span className="mr-5">
+              <span className="font-bold text-zinc-100 tabular-nums">{t.stats.wpm}</span> wpm
             </span>
             <span>
-              acc: <span className="font-semibold text-zinc-200">{t.stats.accuracy}%</span>
+              <span className="font-bold text-zinc-100 tabular-nums">{t.stats.accuracy}%</span> acc
             </span>
           </div>
           {prevBest > 0 && (
-            <div className="ml-auto text-sm text-zinc-500">
-              best <span className="font-semibold text-yellow-300">{prevBest}</span> wpm
+            <div className="ml-auto pb-1.5 text-sm text-zinc-500">
+              best <span className="font-bold text-yellow-300 tabular-nums">{prevBest}</span> wpm
             </div>
           )}
         </div>
 
         <div className="mt-4">
           {t.status === 'done' ? (
-            <section className="rounded-xl border border-zinc-800 bg-zinc-900/60 p-8 text-center">
+            <section className="rounded-2xl border border-white/10 bg-black/40 p-8 text-center shadow-[0_20px_60px_-20px_rgba(0,0,0,0.8)]">
               {isNewBest && (
-                <p className="mb-2 inline-block rounded-full bg-yellow-400/10 px-3 py-1 text-sm font-semibold text-yellow-300">
+                <p className="mb-3 inline-block rounded-full bg-yellow-400/10 px-3 py-1 text-sm font-semibold text-yellow-300">
                   ★ New best!
                 </p>
               )}
-              <p className="text-6xl font-bold text-yellow-300">{t.stats.wpm}</p>
-              <p className="mt-1 text-sm uppercase tracking-widest text-zinc-500">words per minute</p>
-              <div className="mx-auto mt-6 grid max-w-md grid-cols-3 gap-4 text-center">
-                <div>
-                  <p className="text-2xl font-semibold">{t.stats.accuracy}%</p>
-                  <p className="text-xs text-zinc-500">accuracy</p>
-                </div>
-                <div>
-                  <p className="text-2xl font-semibold">
-                    {t.stats.correctWords}/{t.stats.totalWords}
-                  </p>
-                  <p className="text-xs text-zinc-500">correct words</p>
-                </div>
-                <div>
-                  <p className="text-2xl font-semibold">{t.stats.correctChars}</p>
-                  <p className="text-xs text-zinc-500">correct chars</p>
-                </div>
+              <p className="text-7xl font-bold tabular-nums tracking-tight text-yellow-300">
+                {t.stats.wpm}
+              </p>
+              <p className="mt-1 text-xs uppercase tracking-[0.2em] text-zinc-500">
+                words per minute
+              </p>
+              <div className="mx-auto mt-6 grid max-w-md grid-cols-3 gap-4">
+                {[
+                  { v: `${t.stats.accuracy}%`, l: 'accuracy' },
+                  { v: `${t.stats.correctWords}/${t.stats.totalWords}`, l: 'correct words' },
+                  { v: `${t.stats.correctChars}`, l: 'correct chars' },
+                ].map((s) => (
+                  <div key={s.l} className="rounded-xl border border-white/5 bg-white/[0.02] py-3">
+                    <p className="text-xl font-semibold tabular-nums">{s.v}</p>
+                    <p className="mt-0.5 text-[11px] uppercase tracking-wider text-zinc-500">{s.l}</p>
+                  </div>
+                ))}
               </div>
-              <div className="mt-8 flex justify-center gap-3">
-                <button
-                  onClick={restart}
-                  className="rounded-lg bg-zinc-100 px-5 py-2.5 text-sm font-semibold text-zinc-900 hover:bg-white"
-                >
-                  Try again (Enter)
-                </button>
-              </div>
+              <button
+                onClick={restart}
+                className="mt-8 rounded-full bg-yellow-400 px-6 py-2.5 text-sm font-semibold text-zinc-950 shadow-[0_0_24px_-6px_rgba(250,204,21,0.7)] transition-transform hover:scale-[1.03]"
+              >
+                Try again (Enter)
+              </button>
             </section>
           ) : (
             <TypingArea
@@ -170,16 +184,24 @@ export default function App() {
           )}
         </div>
 
-        <footer className="mt-8 text-xs leading-relaxed text-zinc-500">
+        <footer className="mt-auto flex flex-wrap items-center justify-center gap-2 pt-10 text-xs text-zinc-500">
           {lang === 'ne' ? (
-            <p>
-              For Nepali, switch your system keyboard to a Nepali layout (e.g. Nepali Traditional on
-              Windows, Nepali — Anjali on macOS, or a Nepali Unicode keyboard on mobile) and type in
-              देवनागरी.
+            <p className="w-full text-center">
+              नेपालीमा टाइप गर्न system keyboard लाई Nepali layout मा बदल्नुहोस्
             </p>
-          ) : (
-            <p>Press Esc anytime to restart. Your best score per language and duration is saved.</p>
-          )}
+          ) : null}
+          <img src="/logo.png" alt="" className="h-5 w-5 rounded-md border border-white/10 object-cover" />
+          <span>
+            Crafted by <span className="font-semibold text-zinc-300">Aayush Neupane</span> ·
+          </span>
+          <a
+            href={PORTFOLIO_URL}
+            target="_blank"
+            rel="noreferrer"
+            className="text-zinc-400 underline decoration-zinc-700 underline-offset-4 hover:text-yellow-300"
+          >
+            dynamic-aayush38.netlify.app
+          </a>
         </footer>
       </div>
     </main>
