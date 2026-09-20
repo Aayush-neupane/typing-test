@@ -87,12 +87,13 @@ export default function App() {
             alt="Aayush Neupane logo"
             className="h-11 w-11 rounded-xl border border-white/10 object-cover"
           />
-          <div className="mr-auto">
-            <h1 className="text-xl font-bold tracking-tight">
-              Aurora Type <span className="text-yellow-400">·</span>{' '}
-              <span className="text-zinc-400">English + नेपाली</span>
-            </h1>
-            <p className="text-xs text-zinc-500">Check your speed, beat your best</p>
+          <div className="mr-auto leading-none">
+            <p className="text-xl font-bold tracking-[0.2em]">AURORA</p>
+            <p className="mt-1.5 flex justify-between text-[10px] font-medium uppercase text-zinc-500">
+              {'type test'.split('').map((ch, i) => (
+                <span key={i}>{ch === ' ' ? ' ' : ch}</span>
+              ))}
+            </p>
           </div>
           <div className="flex items-center gap-1 rounded-full border border-white/10 bg-black/40 p-1">
             <Pill active={lang === 'en'} onClick={() => setLang('en')}>
