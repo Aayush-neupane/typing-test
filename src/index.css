@@ -7,11 +7,17 @@
 body {
   font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
     "Noto Sans", "Noto Sans Devanagari", sans-serif;
+  background: #09090b;
 }
 
 .font-nepali {
   font-family: "Noto Sans Devanagari", "Mangal", ui-sans-serif, system-ui, sans-serif;
-  line-height: 2.2;
+  line-height: 2.4;
+  letter-spacing: 0.01em;
+}
+
+::selection {
+  background: rgba(250, 204, 21, 0.25);
 }
 
 /* blinking caret on the active letter */
@@ -35,4 +41,11 @@ body {
   50% {
     opacity: 0;
   }
+}
+
+/* soft page backdrop */
+.app-backdrop {
+  background:
+    radial-gradient(600px 300px at 15% -5%, rgba(250, 204, 21, 0.07), transparent 60%),
+    radial-gradient(700px 350px at 90% 0%, rgba(59, 130, 246, 0.08), transparent 60%);
 }
