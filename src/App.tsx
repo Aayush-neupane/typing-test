@@ -191,17 +191,16 @@ export default function App() {
               नेपालीमा टाइप गर्न system keyboard लाई Nepali layout मा बदल्नुहोस्
             </p>
           ) : null}
-          <img src="/logo.png" alt="" className="h-5 w-5 rounded-md border border-white/10 object-cover" />
-          <span>
-            Crafted by <span className="font-semibold text-zinc-300">Aayush Neupane</span> ·
-          </span>
           <a
             href={PORTFOLIO_URL}
             target="_blank"
             rel="noreferrer"
-            className="text-zinc-400 underline decoration-zinc-700 underline-offset-4 hover:text-yellow-300"
+            className="flex items-center gap-2.5 text-sm text-zinc-400 transition-colors hover:text-yellow-300"
           >
-            dynamic-aayush38.netlify.app
+            <img src="/logo.png" alt="" className="h-6 w-6 rounded-md border border-white/10 object-cover" />
+            <span>
+              Crafted by <span className="font-semibold text-zinc-100">Aayush Neupane</span>
+            </span>
           </a>
         </footer>
       </div>
