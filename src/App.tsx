@@ -42,10 +42,24 @@ function Pill({
 }
 
 export default function App() {
-  const [lang, setLang] = useState<Language>('ne')
-  const [duration, setDuration] = useState<number>(30)
+  const [lang, setLang] = useState<Language>(() => {
+    const saved = localStorage.getItem('aurora-type-lang')
+    return saved === 'en' || saved === 'ne' ? saved : 'ne'
+  })
+  const [duration, setDuration] = useState<number>(() => {
+    const saved = Number(localStorage.getItem('aurora-type-duration'))
+    return saved === 15 || saved === 30 || saved === 60 ? saved : 30
+  })
   const t = useTypingTest(lang, duration)
   const [best, setBest] = useState<Best>(loadBest)
+
+  useEffect(() => {
+    localStorage.setItem('aurora-type-lang', lang)
+  }, [lang])
+
+  useEffect(() => {
+    localStorage.setItem('aurora-type-duration', String(duration))
+  }, [duration])
 
   const bestKey = `${lang}-${duration}`
   const prevBest = best[bestKey] ?? 0
