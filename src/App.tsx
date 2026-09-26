@@ -205,26 +205,28 @@ export default function App() {
               ? 'नेपालीमा टाइप गर्न system keyboard लाई Nepali layout मा बदल्नुहोस्'
               : 'Press Esc anytime to restart · Space moves to the next word'}
           </p>
-          <a
-            href="https://github.com/Aayush-neupane/Fastest-Finger"
-            target="_blank"
-            rel="noreferrer"
-            className="inline-flex items-center gap-1.5 rounded-full border border-yellow-400/30 bg-yellow-400/10 px-4 py-1.5 text-xs font-medium text-yellow-200 transition-colors hover:border-yellow-400/60 hover:text-yellow-100"
-          >
-            Race friends on Fastest Fingers
-            <span aria-hidden="true">→</span>
-          </a>
-          <a
-            href={PORTFOLIO_URL}
-            target="_blank"
-            rel="noreferrer"
-            className="flex items-center gap-2.5 text-sm text-zinc-400 transition-colors hover:text-yellow-300"
-          >
-            <img src="/logo.png" alt="" className="h-10 w-10 rounded-lg border border-white/10 object-cover" />
-            <span>
-              Developed by <span className="font-semibold text-zinc-100">Aayush Neupane</span>
-            </span>
-          </a>
+          <div className="flex w-full flex-nowrap items-center justify-center gap-3">
+            <a
+              href="https://github.com/Aayush-neupane/Fastest-Finger"
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex shrink-0 items-center gap-1.5 rounded-full border border-yellow-400/30 bg-yellow-400/10 px-4 py-1.5 text-xs font-medium text-yellow-200 transition-colors hover:border-yellow-400/60 hover:text-yellow-100"
+            >
+              Race friends on Fastest Fingers
+              <span aria-hidden="true">→</span>
+            </a>
+            <a
+              href={PORTFOLIO_URL}
+              target="_blank"
+              rel="noreferrer"
+              className="flex min-w-0 items-center gap-2 text-sm text-zinc-400 transition-colors hover:text-yellow-300"
+            >
+              <img src="/logo.png" alt="" className="h-8 w-8 shrink-0 rounded-lg border border-white/10 object-cover" />
+              <span className="truncate">
+                Developed by <span className="font-semibold text-zinc-100">Aayush Neupane</span>
+              </span>
+            </a>
+          </div>
         </footer>
       </div>
     </main>
