@@ -4,7 +4,7 @@ import { useTypingTest } from './useTypingTest.ts'
 import type { Language } from './words.ts'
 
 const DURATIONS = [15, 30, 60] as const
-const PORTFOLIO_URL = 'https://dynamic-aayush38.netlify.app'
+const PORTFOLIO_URL = 'https://aayushnp.netlify.app'
 
 interface Best {
   [key: string]: number
